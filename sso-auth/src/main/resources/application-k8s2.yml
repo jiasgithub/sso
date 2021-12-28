@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    username:
+    password:
+  redis:
+    cluster: 
+      nodes:
+
+      
+      
+      

@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    username:
+    password:
+  security:
+    user:
+      name: ${random.uuid}
+      password: ${random.uuid}
+  devtools:
+    livereload:
+      port: ${random.int[38080,38090]}
+
+remote: http://localhost:8080
+    
+security:
+  oauth2:
+    client:
+      client-id: authorization_code
+      client-secret: 1ef130b4-e4f8-4d30-8743-7cc09ce249d6
+      access-token-uri: ${remote}/oauth/token
+      user-authorization-uri: ${remote}/oauth/authorize
+      scope:
+      - smsapi
+    resource:
+      token-info-uri: ${remote}/oauth/check_token
+
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false
+  local:
+    default:
+      type: caffeine
+      keyConvertor: fastjson
+  remote:
+    default:
+      type: redis.lettuce
+      keyConvertor: fastjson
+      valueEncoder: java
+      valueDecoder: java
+      poolConfig:
+        minIdle: 10
+        maxIdle: 100
+        maxTotal: 10000
+        maxWait: 1000
+      uri:
+server:
+  port: 8081

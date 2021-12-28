@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    username:
+    password:
+  redis:
+    timeout: 5000
+    jedis:
+      pool:
+        max-active: 512
+        max-idle: 5
+        max-wait: 60000
+        min-idle: 1
+    cluster:
+      nodes:
+  devtools:
+    livereload:
+      port: ${random.int[38080,38090]}
+debug: true

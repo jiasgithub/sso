@@ -1,0 +1,1 @@
+spring:  application:    name: sso-provider  profiles:    active:    - #activatedProperties#

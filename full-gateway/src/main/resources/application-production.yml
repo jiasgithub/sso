@@ -1,0 +1,104 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user_route
+          uri: lb://user-provider
+          predicates:
+            - Path=/api/user/**,/api/feedback/**
+#            - Header=dev-brand, \s+
+#            - Header=dev-manufacturer, \s+
+#            - Header=dev-model, \s+
+#            - Header=dev-language, \s+
+#            - Header=dev-region, \s+
+#            - Header=dev-timezone, \s+
+#            - Header=dev-app-version, \s+
+#            - Header=dev-id, \s+
+#            - Header=dev-pid, \s+
+          filters:
+            - StripPrefix= 0
+        - id: product_route
+          uri: lb://product-provider
+          predicates:
+            - Path=/api/manage/product/**,/api/productExt/**,/api/manage/lottery/**
+          #        - Header=channel, \s+
+          #        - Header=region, \s+
+          filters:
+            - StripPrefix= 1
+
+        - id: lib_route
+          uri: lb://lib-provider
+          predicates:
+            - Path=/api/album/**, /api/artist/**,/api/song/**,/api/stream/**,/api/garbage/**,/api/index/**,/api/lib/**,/api/pic/**
+          filters:
+            - StripPrefix= 0
+        - id: oms_route
+          uri: lb://oms-provider
+          predicates:
+            - Path=/api/batch/**,/api/playlist/**,/api/tag/**,/api/auditlogs/**
+          #        - Header=channel, \s+
+          #        - Header=region, \s+
+          filters:
+            - StripPrefix= 0
+        - id: pms_route
+          uri: lb://pms-provider
+          predicates:
+            - Path=/api/cpoa/**,/api/cpp/**,/api/download/**?**,/api/job/**,/api/contracts/**,/api/copauditlog/**
+
+          #        - Header=channel, \s+
+          #        - Header=region, \s+
+          filters:
+            - StripPrefix= 0
+
+        - id: sso_pro_route
+          uri: lb://sso-provider
+          predicates:
+            - Path=/echo/**,/oauth/**
+          #        - Header=channel, \s+
+          #        - Header=region, \s+
+          filters:
+            - StripPrefix= 0
+
+        - id: sso_reso_route
+          uri: lb://sso-resource
+          predicates:
+            - Path=/channel/**,/dept/**,/menu/**,/region/**,/role/**,/service/**,/user/info,/user/menus,/user/profile,/user/query,/user/get,/user/post,/user/update
+          #        - Header=channel, \s+
+          #        - Header=region, \s+
+          filters:
+            - StripPrefix= 0
+        - id: score_route
+          uri: lb://score-provider
+          predicates:
+            - Path=/api/score/**
+          #        - Header=channel, \s+
+          #        - Header=region, \s+
+          filters:
+            - StripPrefix= 1
+
+        - id: data_route
+          uri: lb://data-provider
+          predicates:
+            - Path=/api/data/**,/api/rank/**
+          #        - Header=channel, \s+
+          #        - Header=region, \s+
+          filters:
+            - StripPrefix= 1
+
+        - id: megadata_route
+          uri: lb://megadata-provider
+          predicates:
+            - Path=/api/reports/home/**,/api/reports/data/**,/api/reports/search/**,/api/reports/searchUnresult/**
+          #        - Header=channel, \s+
+          #        - Header=region, \s+
+          filters:
+            - StripPrefix= 0
+
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
+server:
+  error:
+    whitelabel:
+      enabled: false
+  port: 12000

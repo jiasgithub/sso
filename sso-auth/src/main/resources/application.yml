@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active:
+      #activatedProperties#
+  jackson:
+    default-property-inclusion: NON_NULL
+    serialization:
+      write-dates-as-timestamps: true

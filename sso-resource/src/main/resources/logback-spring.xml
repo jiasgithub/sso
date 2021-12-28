@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+
+    <property name="log.path" value="/backup/applogs"/>
+    <property name="log.pattern"
+              value="%d{'yyyy-MM-dd HH:mm:ss,SSS'} | %-5level | %X{x-request-id} | %thread:%c{0}:%L | %msg%n"/>
+    <property name="log.charset" value="UTF-8"/>
+    <property name="log.file.app" value="${log.path}/app-${springAppName}.log"/>
+    <property name="log.file.error" value="${log.path}/error-${springAppName}.log"/>
+    <property name="log.file.pattern" value=".%d{yyyy-MM-dd}.gz"/>
+
+    <appender name="stdOut" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <encoder>
+            <Pattern>${log.pattern}</Pattern>
+            <charset>${log.charset}</charset>
+        </encoder>
+    </appender>
+
+    <appender name="appOut" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.file.app}</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>debug</level>
+        </filter>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+            <charset>${log.charset}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.file.app}${log.file.pattern}</fileNamePattern>
+            <totalSizeCap>1GB</totalSizeCap>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="errorOut" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.file.error}</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+            <charset>${log.charset}</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.file.error}${log.file.pattern}</fileNamePattern>
+            <totalSizeCap>1GB</totalSizeCap>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="stdOut"/>
+            <appender-ref ref="appOut"/>
+            <appender-ref ref="errorOut"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test">
+        <root level="info">
+            <appender-ref ref="stdOut"/>
+            <appender-ref ref="appOut"/>
+            <appender-ref ref="errorOut"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="production">
+        <root level="info">
+            <appender-ref ref="appOut"/>
+            <appender-ref ref="errorOut"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="k8s">
+        <root level="info">
+            <appender-ref ref="appOut"/>
+            <appender-ref ref="errorOut"/>
+        </root>
+    </springProfile>
+	<springProfile name="k8s2">
+        <root level="info">
+        	<appender-ref ref="stdOut"/>
+            <appender-ref ref="appOut"/>
+            <appender-ref ref="errorOut"/>
+        </root>
+    </springProfile>
+    <springProfile name="sg">
+        <root level="info">
+            <appender-ref ref="stdOut"/>
+            <appender-ref ref="appOut"/>
+            <appender-ref ref="errorOut"/>
+        </root>
+    </springProfile>
+</configuration>

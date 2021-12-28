@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+#        server-addr: http://nacos-headless:8848
+        enabled: false

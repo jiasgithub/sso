@@ -1,0 +1,1 @@
+spring:  application:    name: sso-resource  profiles:    active:    - #activatedProperties#
